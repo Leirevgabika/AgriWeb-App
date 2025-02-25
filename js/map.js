@@ -18,46 +18,48 @@ function mostrar_mapa(posicion) {
     L.control.scale().addTo(map);
     // añadir un marcador en las coordenadas
     L.marker([latitud, longitud], { draggable: false }).addTo(map);
+
 }
 
-function meteorologia(posicion) {
+async function obtener_datos_meteo(latitud, longitud) {
+    const url_peticion = `https://api.open-meteo.com/v1/forecast?latitude=${latitud}&longitude=${longitud}&hourly=temperature_2m,relativehumidity_2m,windspeed_10m,apparent_temperature,visibility,pressure_msl,uv_index,precipitation,cloudcover&daily=temperature_2m_max,temperature_2m_min&timezone=auto`;
+
+    try {
+        const respuesta = await fetch(url_peticion);
+        const datos = await respuesta.json();
+
+        // Aquí puedes reorganizar los datos en el formato que prefieras
+
+        return {
+            latitud: latitud,
+            longitud: longitud,
+            temperaturaActual: datos.hourly.temperature_2m[0],
+            humedad: datos.hourly.relativehumidity_2m[0],
+            viento: datos.hourly.windspeed_10m[0],
+            temperaturaMaxima: datos.daily.temperature_2m_max[0],
+            temperaturaMinima: datos.daily.temperature_2m_min[0],
+        };
+
+    } catch (error) {
+        console.error("Error al obtener los datos meteorológicos:", error);
+        return null;
+    }
+}
+
+function datos_meteo(posicion) {
     let latitud = posicion.coords.latitude;
     let longitud = posicion.coords.longitude;
-    let openweatherapi = '6dc9bbbcf420147dcedd6fc42affaa44';
-    let weather_base = `http://api.openweathermap.org/data/2.5/weather?`
-        + `lat=${latitud}&lon=${longitud}&appid=${openweatherapi}&units=metric&lang=es`;
 
-    fetch(weather_base)
-        .then((response) => {
-            return response.json();
-        })
-        .then((data) => {
-            console.log(data);
-
-            let temperatura = data.main.temp;
-            let humedad = data.main.humidity;
-            //let precipitaciones = data.current.rain;
-            let viento = data.wind;
-            let meteo_desc = data.weather[0].description;
-            let meteo_loc = data.name + ", " + data.sys.country;
-            let icono = data.weather[0].icon;
-
-            $("#temperatura").text(`Temperatura: ${temperatura} °C`);
-            $("#humedad").text(`Nivel de humedad: ${humedad}%`);
-            //$("#precipitaciones").text(`Precipitaciones: ${precipitaciones}`);
-            $("#viento").text(`Viento: ${viento.speed} m/s ${viento.deg}`);
-            $("#meteo_loc").text(meteo_loc);
-            $("#meteo_desc").text(`Situación actual: ${meteo_desc}`);
-            $("#meteo_icono").html(`<img src="https://openweathermap.org/img/wn/${icono}@2x.png" style= 'height:10rem'/>`);
-
-        });
+    let datos = obtener_datos_meteo(latitud, longitud);
+    console.log(datos);
 }
 
 window.onload = function () {
 
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(mostrar_mapa);
-        navigator.geolocation.getCurrentPosition(meteorologia);
+        navigator.geolocation.getCurrentPosition(datos_meteo);
+
     } else {
         alert("Este navegador no soporta geolocalizacion");
     }
