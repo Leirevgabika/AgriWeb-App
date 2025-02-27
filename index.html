@@ -25,8 +25,17 @@
 
     <!-- DataTables CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
     <!-- DataTables JS -->
     <script type="text/javascript" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
 
     <!-- Cargar TensorFlow.js y MobileNet -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
@@ -143,19 +152,28 @@
     </div>
 
     <!-- Analisis de datos -->
-    <div id="analisis datos">
-        <!-- Tabla interactiva -->
-        <table id="tabla">
-            <thead>
-                <tr>
-                    <th>Temperatura actual</th>
-                    <th>Precipitaciones</th>
-                    <th>Humedad</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+    <div class="container">
+        <h1 class="mb-4">Datos Meteorológicos Históricos</h1>
+        <p id="ubicacion-info" class="lead"></p>
+
+        <div class="btn-group" role="group">
+            <button id="btn-7dias" class="btn btn-outline-primary">Últimos 7 días</button>
+            <button id="btn-30dias" class="btn btn-primary">Últimos 30 días</button>
+            <button id="btn-90dias" class="btn btn-outline-primary">Últimos 90 días</button>
+        </div>
+
+        <div id="error-mensaje"></div>
+
+        <div id="cargando">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p>Obteniendo datos meteorológicos...</p>
+        </div>
+
+        <div id="contenedor-tabla" style="display: none;">
+            <table id="tabla-meteorologica" class="display responsive nowrap" width="100%"></table>
+        </div>
     </div>
 
     <!-- Analisis de imagenes -->
