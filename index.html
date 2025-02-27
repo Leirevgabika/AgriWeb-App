@@ -177,23 +177,32 @@
     </div>
 
     <!-- Analisis de imagenes -->
-    <div id="imagenes">
-        <video id="camera" autoplay playsinline></video>
+    <div class="container">
+        <h1>Detector de Vacas</h1>
+        <p>Sube una imagen o usa la cámara para detectar si hay una vaca en la imagen.</p>
 
-        <!-- Canvas para mostrar la imagen capturada -->
-        <canvas id="snapshot"></canvas>
-        <br>
-        <!-- Botón para capturar la foto -->
-        <div id="buttonContainer">
-            <button id="capture">Capturar Foto</button>
-
-            <button id="insertButton">Insertar Foto</button>
-            <input type="file" accept="image/*" id="fileInput">
+        <!-- Botones de interacción -->
+        <div id="inputControls">
+            <button id="uploadButton">Subir Imagen</button>
+            <button id="cameraButton" class="hidden">Usar Cámara</button>
+            <input type="file" id="fileInput" accept="image/*" style="display: none;">
         </div>
 
+        <!-- Elemento de video para la cámara (oculto inicialmente) -->
+        <video id="video" autoplay playsinline style="display: none;"></video>
+        <button id="captureButton" style="display: none;">Capturar Imagen</button>
 
-        <!-- Resultado del modelo -->
-        <p id="result" style="margin-top: 20px; font-size: 18px;"></p>
+        <!-- Contenedor para previsualizar la imagen -->
+        <div id="imageContainer">
+            <img id="imagePreview" alt="Vista previa de imagen">
+        </div>
+
+        <!-- Botón para analizar -->
+        <button id="analyzeButton" style="display: none;">Analizar Imagen</button>
+
+        <!-- Mensaje de carga y resultados -->
+        <div id="loadingMessage">Analizando imagen...</div>
+        <div id="result"></div>
     </div>
 </body>
 
